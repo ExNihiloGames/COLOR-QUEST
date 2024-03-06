@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Manager.unity
+    guid: 521a44f780a9d214cbd7beeac01940ec
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Titre.unity
+    guid: 4c434710c45367c479ab7b08c911c9b9
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_00.unity
+    guid: bdedce17ab3edb34cbe177153ebd0c8c
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_01.unity
+    guid: 9a8a56be937f7d7479c3c1c96338bafd
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_02.unity
+    guid: 088cd8932fb074f409569c4f33cb1584
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_03.unity
+    guid: 618fcd08d27d2b440b4068e591c5ef74
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_04.unity
+    guid: d4f28643c73c83d49bd73e87db55d98e
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_05.unity
+    guid: 2a4d25a088f5c7d48bb2f036b739db3b
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_06.unity
+    guid: 40aab948659382e4eb98c224e8c4655f
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_07.unity
+    guid: 6408bbd6da15c2340a77b3899a56365c
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Niv_08.unity
+    guid: 245318fa4d4cb5342b7da890af8aac96
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/Credit.unity
+    guid: d5f6011594117d049b7495b5242b8e07
+  m_configObjects: {}

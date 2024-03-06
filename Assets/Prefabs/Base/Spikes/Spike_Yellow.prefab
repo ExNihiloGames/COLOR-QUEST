@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8021846018928098311
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683795379657127628, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2887500503340243226, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 77f32a9f96e0f784d97eec373a0bf869, type: 2}
+    - target: {fileID: 3347600594901429366, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_Name
+      value: Spike_Yellow
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863427074933122229, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: filter
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863427074933122229, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: emissiveColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863427074933122229, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: emissiveColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470911769370386689, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 77f32a9f96e0f784d97eec373a0bf869, type: 2}
+    - target: {fileID: 8675692554500655116, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: filter
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8675692554500655116, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: emissiveColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8675692554500655116, guid: dfdc2096b1eda124d9c9a58726f889e6,
+        type: 3}
+      propertyPath: emissiveColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dfdc2096b1eda124d9c9a58726f889e6, type: 3}
