@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
+    public static Scene CurrentScene => currentScene;
+    private static Scene currentScene;
+
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
