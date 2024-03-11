@@ -62,7 +62,7 @@ sysinfo.txt
 *.app
 
 # PLasticSCm
-*.plastic
+*.plastic/
 
 # Crashlytics generated file
 crashlytics-build.properties
