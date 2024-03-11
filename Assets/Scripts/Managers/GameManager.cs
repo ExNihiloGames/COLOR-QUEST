@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
+    public static Scene CurrentScene => currentScene;
+    private static Scene currentScene;
+
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -133,6 +137,7 @@ public class GameManager : MonoBehaviour
     {
         Crossfade();
         StartCoroutine(LoadAsynchronously((int)scene));
+        currentScene= scene;
         Crossfade();
     }
 
@@ -141,6 +146,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         Crossfade();
         StartCoroutine(LoadAsynchronously((int)Scene.Titre));
+        currentScene = Scene.Titre;
         Crossfade();
     }
 
@@ -148,6 +154,7 @@ public class GameManager : MonoBehaviour
     {
         Crossfade();
         StartCoroutine(LoadAsynchronously((int)Scene.Niv_00));
+        currentScene = Scene.Niv_00;
         Crossfade();
     }
 
@@ -155,12 +162,14 @@ public class GameManager : MonoBehaviour
     {
         Crossfade();
         StartCoroutine(LoadAsynchronously((int)Scene.Credit));
+        currentScene = Scene.Credit;
         Crossfade();
     }
 
     public void ResetLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        currentScene = (Scene)SceneManager.GetActiveScene().buildIndex;
         //StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex));
     }
 
@@ -168,6 +177,7 @@ public class GameManager : MonoBehaviour
     {
         Crossfade();
         StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex + 1));
+        currentScene = (Scene)SceneManager.GetActiveScene().buildIndex + 1;
         Crossfade();
     }
 
