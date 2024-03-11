@@ -2853,7 +2853,7 @@ PrefabInstance:
     - target: {fileID: 8217718429813443617, guid: ea161eb4d6607a6469416ee684340ec1,
         type: 3}
       propertyPath: drawWalkMap
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8217718429813443617, guid: ea161eb4d6607a6469416ee684340ec1,
         type: 3}
@@ -13688,6 +13688,11 @@ PrefabInstance:
     - target: {fileID: 2405812677665648954, guid: 258001c3baac93a4bb07b705d1eb41b1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061741001028494138, guid: 258001c3baac93a4bb07b705d1eb41b1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

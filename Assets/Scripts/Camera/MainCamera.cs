@@ -63,7 +63,7 @@ public class MainCamera : MonoBehaviour
         {
             Vector3 targetCamPos = player.position + offset;
             transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
-        }        
+        }
     }
 
     private void OnEnable()
