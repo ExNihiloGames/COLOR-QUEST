@@ -186,7 +186,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         currentScene = (Scene)SceneManager.GetActiveScene().buildIndex;
-        //StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void LoadNextLevel()

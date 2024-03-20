@@ -75,16 +75,15 @@ public class LevelManager : MonoBehaviour
 
     private void ActivateEagleView(InputAction.CallbackContext context)
     {
-        if (mainCamera.isEagleView)
+        if(mainCamera.isEagleView)
         {
-            mainCamera.SetEagleView(false);
             onEagleView?.Invoke(false);
         }
         else
         {
-            mainCamera.SetEagleView(true);
             onEagleView?.Invoke(true);
         }
+        mainCamera.SetEagleView(!mainCamera.isEagleView);
     }
 
     private void LM_ResetLevel(InputAction.CallbackContext context)
