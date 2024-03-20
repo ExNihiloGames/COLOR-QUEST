@@ -46,6 +46,13 @@ public class Player : MonoBehaviour
         GameManager.onPlayerRespawn -= Respawn;
     }
 
+    private void OnDestroy()
+    {
+        ColorCollectable.onColorCollected -= ActivateOrbitor;
+        GameManager.onPlayerDeath -= Die;
+        GameManager.onPlayerRespawn -= Respawn;
+    }
+
     public void ActivateOrbitor(Filter orbitorColor, Vector3 position)
     {
         switch(orbitorColor)

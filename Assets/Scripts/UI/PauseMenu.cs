@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Audio;
 using System;
 
 public class PauseMenu : MenuBase
@@ -33,6 +32,11 @@ public class PauseMenu : MenuBase
         GameManager.onPause += OnPause;
     }
     private void OnDisable()
+    {
+        GameManager.onPause -= OnPause;
+    }
+
+    private void OnDestroy()
     {
         GameManager.onPause -= OnPause;
     }
@@ -115,24 +119,5 @@ public class PauseMenu : MenuBase
     public void ExitGame()
     {
         onExitGame?.Invoke();
-    }
-
-    private void EnableplayerInputs(bool enable)
-    {
-        if (enable == false)
-        {            
-            playerInputs.PauseMenu.Pause.performed -= OnPauseInput;
-            playerInputs.PauseMenu.Disable();
-        }
-        else
-        {
-            playerInputs.PauseMenu.Enable();
-            playerInputs.PauseMenu.Pause.performed += OnPauseInput;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        EnableplayerInputs(false);
     }
 }

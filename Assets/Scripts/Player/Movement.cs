@@ -11,7 +11,6 @@ public class Movement : MonoBehaviour
     private Vector2 moveInput;
     private Grid grid;
     private GameObject player;
-    //private Player playerScript;
     private PlayerInputs playerInputs;
     private Node playerNode;
     private Animator animator;
@@ -40,6 +39,15 @@ public class Movement : MonoBehaviour
     }
 
     private void OnDisable()
+    {
+        EnablePlayerInputs(false);
+        GameManager.onPlayerDeath -= ResetOnDeath;
+        GameManager.onPause -= DisablePlayerInputs;
+        LevelManager.onEagleView -= DisablePlayerInputs;
+        ColorCollectable.onColorCollected -= OnColorCollected;
+    }
+
+    private void OnDestroy()
     {
         EnablePlayerInputs(false);
         GameManager.onPlayerDeath -= ResetOnDeath;

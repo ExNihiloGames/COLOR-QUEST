@@ -131,13 +131,11 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
-            onPause?.Invoke(false);
         }
         else
         {
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
-            onPause?.Invoke(true);
         }
         isPaused = !isPaused;
         onPause?.Invoke(isPaused);
