@@ -30,15 +30,23 @@ public class PauseMenu : MenuBase
     private void OnEnable()
     {
         GameManager.onPause += OnPause;
+        if(playerInputs == null)
+        {
+            playerInputs= new PlayerInputs();
+        }
+        EnablePauseMenuInputs(true);
     }
+
     private void OnDisable()
     {
         GameManager.onPause -= OnPause;
+        EnablePauseMenuInputs(false);
     }
 
     private void OnDestroy()
     {
         GameManager.onPause -= OnPause;
+        EnablePauseMenuInputs(false);
     }
 
     public void OnPauseInput(InputAction.CallbackContext context)
@@ -119,5 +127,17 @@ public class PauseMenu : MenuBase
     public void ExitGame()
     {
         onExitGame?.Invoke();
+    }
+
+    private void EnablePauseMenuInputs(bool enable)
+    {
+        if (enable)
+        {
+            playerInputs.PauseMenu.Enable();
+            playerInputs.PauseMenu.Pause.performed += OnPauseInput;
+            return;
+        }
+        playerInputs.PauseMenu.Pause.performed -= OnPauseInput;
+        playerInputs.PauseMenu.Disable();
     }
 }

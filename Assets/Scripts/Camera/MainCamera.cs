@@ -77,6 +77,12 @@ public class MainCamera : MonoBehaviour
         GameManager.onPlayerDeath -= ShakeCoroutine;
     }
 
+    private void OnDestroy()
+    {
+        EnablePlayerInputs(false);
+        GameManager.onPlayerDeath -= ShakeCoroutine;
+    }
+
     public void EnablePlayerInputs(bool enable)
     {
         if (enable)

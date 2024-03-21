@@ -46,6 +46,9 @@ public class LevelManager : MonoBehaviour
     {
         ColorCollectable.onColorCollected -= OnColorPicked;
         GameManager.onPause -= OnGamePaused;
+        playerInputs.PlayerActions.Reset.performed -= LM_ResetLevel;
+        playerInputs.PlayerActions.EagleViewCam.performed -= ActivateEagleView;
+        playerInputs.PlayerActions.Disable();
     }
 
     void Start()

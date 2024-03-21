@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (!Physics.CheckSphere(groundCheck.position, 0.25f, walkableLayer)) // 0.5f
+        if (!Physics.CheckSphere(groundCheck.position, 0.25f, walkableLayer))
         {
             Vector3 pos = transform.position;
             transform.position = new Vector3(pos.x, pos.y + _gravity * Time.deltaTime, pos.z);
