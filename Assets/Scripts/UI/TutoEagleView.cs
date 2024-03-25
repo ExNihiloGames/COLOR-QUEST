@@ -9,13 +9,11 @@ public class TutoEagleView : MonoBehaviour
     private PlayerInputs playerInputs;
     private bool eagleViewOn;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerInputs = new PlayerInputs();
-        playerInputs.PlayerActions.Enable();
-        playerInputs.PlayerActions.EagleViewCam.performed += OnEagleViewEnter;
         playerInputs.EagleViewCamera.Enable();
+        playerInputs.EagleViewCamera.ActivateEagleView.performed += OnEagleViewEnter;
         playerInputs.EagleViewCamera.Rotate.performed += onCameraRotate;
     }
 
