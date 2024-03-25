@@ -127,15 +127,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EagleViewCam",
-                    "type": "Button",
-                    "id": "602c5777-eef1-473f-910e-aef7b78d2935",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Cyan",
                     "type": "Button",
                     "id": "75bf9569-acbb-43d2-8c4f-114b480a846c",
@@ -194,17 +185,6 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "CycleColorDown",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1019944f-e5be-42ef-8ee8-96215403a113",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "EagleViewCam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -428,6 +408,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ActivateEagleView",
+                    "type": "Button",
+                    "id": "a63db48b-fabf-4662-ae46-f63387ac99fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -463,6 +452,17 @@
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d03537ec-df7c-4cce-967e-0c79ad3faaf5",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ActivateEagleView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

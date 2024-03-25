@@ -42,10 +42,10 @@ public class MainCamera : MonoBehaviour
     private bool _isEagleView;
     public bool isEagleView { get { return _isEagleView; } }
 
+    public static Action<bool> EagleViewStateChange;
     public static Action onRotateStart;
     public static Action onRotateEnd;
 
-    // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
@@ -53,8 +53,13 @@ public class MainCamera : MonoBehaviour
         cam = GetComponent<Camera>();
         distance = Vector3.Distance(transform.position, player.position);
         ogOrthographicSize = cam.orthographicSize;
-        transform.LookAt(player.position);
         offset = transform.position - player.position;
+
+        transform.LookAt(player.position);
+
+        playerInputs.EagleViewCamera.Enable();
+        EnableEagleViewActivation(true);
+        EnableEagleViewRotation(false);
     }
 
     void LateUpdate()
@@ -68,33 +73,48 @@ public class MainCamera : MonoBehaviour
 
     private void OnEnable()
     {
+        if (playerInputs !=null)
+        {
+            playerInputs.EagleViewCamera.Enable();
+        }
         GameManager.onPlayerDeath += ShakeCoroutine;
     }
 
     private void OnDisable()
     {
-        EnablePlayerInputs(false);
+        if (playerInputs != null)
+        {
+            playerInputs.EagleViewCamera.Enable();
+        }
         GameManager.onPlayerDeath -= ShakeCoroutine;
     }
 
     private void OnDestroy()
     {
-        EnablePlayerInputs(false);
+        EnableEagleViewActivation(false);
+        EnableEagleViewRotation(false);
+        playerInputs.EagleViewCamera.Disable();
         GameManager.onPlayerDeath -= ShakeCoroutine;
     }
 
-    public void EnablePlayerInputs(bool enable)
+    public void EnableEagleViewActivation(bool enable)
     {
         if (enable)
         {
-            playerInputs.EagleViewCamera.Enable();
-            playerInputs.EagleViewCamera.Rotate.performed += OnRotate;
+            playerInputs.EagleViewCamera.ActivateEagleView.performed += OnEagleView;
+            return;
         }
-        else
+        playerInputs.EagleViewCamera.ActivateEagleView.performed -= OnEagleView;
+    }
+
+    public void EnableEagleViewRotation(bool enable)
+    {
+        if (enable)
         {
-            playerInputs.EagleViewCamera.Rotate.performed -= OnRotate;
-            playerInputs.EagleViewCamera.Disable();
+            playerInputs.EagleViewCamera.Rotate.performed += OnRotate;
+            return;
         }
+        playerInputs.EagleViewCamera.Rotate.performed -= OnRotate;
     }
 
     public void Teleport()
@@ -102,9 +122,9 @@ public class MainCamera : MonoBehaviour
         transform.position = player.position + offset;
     }
 
-    public void SetEagleView(bool enable)
+    private void OnEagleView(InputAction.CallbackContext context)
     {
-        if (enable)
+        if (!_isEagleView)
         {
             StartCoroutine(EagleView());
         }
@@ -117,27 +137,35 @@ public class MainCamera : MonoBehaviour
     private void OnRotate(InputAction.CallbackContext context)
     {
         float rotateInput = playerInputs.EagleViewCamera.Rotate.ReadValue<float>();
-        float dir = rotateInput < 0 ? 1f : -1f; // Previously -1f : 1f
+        float dir = rotateInput < 0 ? 1f : -1f;
         StartCoroutine(Rotate(dir));
     }
 
     IEnumerator EagleView()
     {
+        EnableEagleViewActivation(false);
+        EnableEagleViewRotation(false);
+
         while (cam.orthographicSize < eagleViewSetup.evOrthographicSize)
         {
             cam.orthographicSize += eagleViewSetup.zoomSpeed * Time.deltaTime;
             yield return null;
         }
         cam.orthographicSize = eagleViewSetup.evOrthographicSize;
-        EnablePlayerInputs(true);
         _isEagleView = true;
+        EagleViewStateChange?.Invoke(_isEagleView);
+
+        EnableEagleViewActivation(true);
+        EnableEagleViewRotation(true);
     }
 
     IEnumerator Rotate(float direction)
     {
+        EnableEagleViewActivation(false);
+        EnableEagleViewRotation(false);
+
         float rot = 0f;
-        onRotateStart?.Invoke();
-        EnablePlayerInputs(false);
+        onRotateStart?.Invoke(); // Event for Tuto
         while (rot < eagleViewSetup.stepRot)
         {
             transform.RotateAround(player.position, Vector3.up, direction * eagleViewSetup.rotationSpeed * Time.deltaTime);
@@ -146,18 +174,22 @@ public class MainCamera : MonoBehaviour
             yield return null;
         }
         cumulativeRot += rot * direction;
-        onRotateEnd?.Invoke();
-        EnablePlayerInputs(true);
+        onRotateEnd?.Invoke(); // Event for Tuto
+
+        EnableEagleViewActivation(true);
+        EnableEagleViewRotation(true);
     }
 
     IEnumerator ResetCamera()
     {
+        EnableEagleViewActivation(false);
+        EnableEagleViewRotation(false);
+
         float direction = 0f;
         float rot = 0f;
         float moduloCumulativeRot = cumulativeRot % 360;
 
-        onRotateStart?.Invoke();
-        EnablePlayerInputs(false);
+        onRotateStart?.Invoke(); // Tuto
         // Determines the direction in which to rotate the camera, don't ask too much questions nor touch anything really
         if (moduloCumulativeRot >= 0f && moduloCumulativeRot <= 180f || moduloCumulativeRot >= -360 && moduloCumulativeRot <= -180)
         {
@@ -187,16 +219,19 @@ public class MainCamera : MonoBehaviour
             yield return null;
         }
         cam.orthographicSize = ogOrthographicSize;
-        onRotateEnd?.Invoke();
+        onRotateEnd?.Invoke(); // Tuto
         _isEagleView = false;
+        EagleViewStateChange?.Invoke(_isEagleView);
+
+        EnableEagleViewActivation(true);
     }
 
-    void ShakeCoroutine()
+    private void ShakeCoroutine()
     {
         StartCoroutine(Shake());
     }
 
-    public IEnumerator Shake()
+    private IEnumerator Shake()
     {
         Vector3 originPos = transform.position;
         float elapsedTime = 0f;

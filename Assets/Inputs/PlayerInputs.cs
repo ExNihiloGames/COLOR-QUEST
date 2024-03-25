@@ -149,15 +149,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EagleViewCam"",
-                    ""type"": ""Button"",
-                    ""id"": ""602c5777-eef1-473f-910e-aef7b78d2935"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Cyan"",
                     ""type"": ""Button"",
                     ""id"": ""75bf9569-acbb-43d2-8c4f-114b480a846c"",
@@ -216,17 +207,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""CycleColorDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1019944f-e5be-42ef-8ee8-96215403a113"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""EagleViewCam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -450,6 +430,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ActivateEagleView"",
+                    ""type"": ""Button"",
+                    ""id"": ""a63db48b-fabf-4662-ae46-f63387ac99fa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -485,6 +474,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d03537ec-df7c-4cce-967e-0c79ad3faaf5"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ActivateEagleView"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -505,7 +505,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_PlayerActions_Reset = m_PlayerActions.FindAction("Reset", throwIfNotFound: true);
         m_PlayerActions_CycleColorUp = m_PlayerActions.FindAction("CycleColorUp", throwIfNotFound: true);
         m_PlayerActions_CycleColorDown = m_PlayerActions.FindAction("CycleColorDown", throwIfNotFound: true);
-        m_PlayerActions_EagleViewCam = m_PlayerActions.FindAction("EagleViewCam", throwIfNotFound: true);
         m_PlayerActions_Cyan = m_PlayerActions.FindAction("Cyan", throwIfNotFound: true);
         m_PlayerActions_Magenta = m_PlayerActions.FindAction("Magenta", throwIfNotFound: true);
         m_PlayerActions_Yellow = m_PlayerActions.FindAction("Yellow", throwIfNotFound: true);
@@ -520,6 +519,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         // EagleViewCamera
         m_EagleViewCamera = asset.FindActionMap("EagleViewCamera", throwIfNotFound: true);
         m_EagleViewCamera_Rotate = m_EagleViewCamera.FindAction("Rotate", throwIfNotFound: true);
+        m_EagleViewCamera_ActivateEagleView = m_EagleViewCamera.FindAction("ActivateEagleView", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -630,7 +630,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Reset;
     private readonly InputAction m_PlayerActions_CycleColorUp;
     private readonly InputAction m_PlayerActions_CycleColorDown;
-    private readonly InputAction m_PlayerActions_EagleViewCam;
     private readonly InputAction m_PlayerActions_Cyan;
     private readonly InputAction m_PlayerActions_Magenta;
     private readonly InputAction m_PlayerActions_Yellow;
@@ -641,7 +640,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Reset => m_Wrapper.m_PlayerActions_Reset;
         public InputAction @CycleColorUp => m_Wrapper.m_PlayerActions_CycleColorUp;
         public InputAction @CycleColorDown => m_Wrapper.m_PlayerActions_CycleColorDown;
-        public InputAction @EagleViewCam => m_Wrapper.m_PlayerActions_EagleViewCam;
         public InputAction @Cyan => m_Wrapper.m_PlayerActions_Cyan;
         public InputAction @Magenta => m_Wrapper.m_PlayerActions_Magenta;
         public InputAction @Yellow => m_Wrapper.m_PlayerActions_Yellow;
@@ -663,9 +661,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @CycleColorDown.started += instance.OnCycleColorDown;
             @CycleColorDown.performed += instance.OnCycleColorDown;
             @CycleColorDown.canceled += instance.OnCycleColorDown;
-            @EagleViewCam.started += instance.OnEagleViewCam;
-            @EagleViewCam.performed += instance.OnEagleViewCam;
-            @EagleViewCam.canceled += instance.OnEagleViewCam;
             @Cyan.started += instance.OnCyan;
             @Cyan.performed += instance.OnCyan;
             @Cyan.canceled += instance.OnCyan;
@@ -688,9 +683,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @CycleColorDown.started -= instance.OnCycleColorDown;
             @CycleColorDown.performed -= instance.OnCycleColorDown;
             @CycleColorDown.canceled -= instance.OnCycleColorDown;
-            @EagleViewCam.started -= instance.OnEagleViewCam;
-            @EagleViewCam.performed -= instance.OnEagleViewCam;
-            @EagleViewCam.canceled -= instance.OnEagleViewCam;
             @Cyan.started -= instance.OnCyan;
             @Cyan.performed -= instance.OnCyan;
             @Cyan.canceled -= instance.OnCyan;
@@ -830,11 +822,13 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_EagleViewCamera;
     private List<IEagleViewCameraActions> m_EagleViewCameraActionsCallbackInterfaces = new List<IEagleViewCameraActions>();
     private readonly InputAction m_EagleViewCamera_Rotate;
+    private readonly InputAction m_EagleViewCamera_ActivateEagleView;
     public struct EagleViewCameraActions
     {
         private @PlayerInputs m_Wrapper;
         public EagleViewCameraActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Rotate => m_Wrapper.m_EagleViewCamera_Rotate;
+        public InputAction @ActivateEagleView => m_Wrapper.m_EagleViewCamera_ActivateEagleView;
         public InputActionMap Get() { return m_Wrapper.m_EagleViewCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -847,6 +841,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
+            @ActivateEagleView.started += instance.OnActivateEagleView;
+            @ActivateEagleView.performed += instance.OnActivateEagleView;
+            @ActivateEagleView.canceled += instance.OnActivateEagleView;
         }
 
         private void UnregisterCallbacks(IEagleViewCameraActions instance)
@@ -854,6 +851,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
+            @ActivateEagleView.started -= instance.OnActivateEagleView;
+            @ActivateEagleView.performed -= instance.OnActivateEagleView;
+            @ActivateEagleView.canceled -= instance.OnActivateEagleView;
         }
 
         public void RemoveCallbacks(IEagleViewCameraActions instance)
@@ -889,7 +889,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnReset(InputAction.CallbackContext context);
         void OnCycleColorUp(InputAction.CallbackContext context);
         void OnCycleColorDown(InputAction.CallbackContext context);
-        void OnEagleViewCam(InputAction.CallbackContext context);
         void OnCyan(InputAction.CallbackContext context);
         void OnMagenta(InputAction.CallbackContext context);
         void OnYellow(InputAction.CallbackContext context);
@@ -907,5 +906,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     public interface IEagleViewCameraActions
     {
         void OnRotate(InputAction.CallbackContext context);
+        void OnActivateEagleView(InputAction.CallbackContext context);
     }
 }
