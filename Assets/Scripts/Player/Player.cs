@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -9,16 +10,18 @@ public class Player : MonoBehaviour
     public Transform groundCheck;
     public LayerMask walkableLayer;
 
-    private Rigidbody rigidBody;
     private BoxCollider boxCollider;
     private ParticleSystem deathEffect;
     private float _gravity = -9.81f;
+    private bool _isFalling = false;
     private bool _locked = false;
-    public bool locked { get { return _locked; } set { _locked = value; } }
+    public bool locked { get { return _locked; } set { _locked = value; } }    
+
+    public static Action PlayerFalls;
+
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
         deathEffect = GetComponent<ParticleSystem>();
     }
@@ -28,7 +31,14 @@ public class Player : MonoBehaviour
         if (!Physics.CheckSphere(groundCheck.position, 0.25f, walkableLayer))
         {
             Vector3 pos = transform.position;
-            transform.position = new Vector3(pos.x, pos.y + _gravity * Time.deltaTime, pos.z);
+
+            if (!_isFalling)
+            {
+                PlayerFalls?.Invoke();
+                _isFalling = true;
+            }
+
+            transform.position = new Vector3(pos.x, pos.y + _gravity * Time.deltaTime, pos.z);            
         }
     }
 
@@ -71,7 +81,6 @@ public class Player : MonoBehaviour
     public void Die()
     {
         _locked = true;
-        // rigidBody.useGravity = false;
         boxCollider.enabled = false;
         foreach (Transform child in transform)
         {
@@ -88,6 +97,7 @@ public class Player : MonoBehaviour
 
     public void Respawn()
     {
+        _isFalling = false;
         foreach (Transform child in transform)
         {
             if (child != transform)
@@ -95,7 +105,6 @@ public class Player : MonoBehaviour
                 child.gameObject.SetActive(true);
             }
         }
-        // rigidBody.useGravity = true;
         boxCollider.enabled = true;
         _locked = false;
     }
