@@ -6,24 +6,24 @@ public class InGameUI : MonoBehaviour
 
     private void Start()
     {
-        MainCamera.onRotateStart += ShowWaitUI;
-        MainCamera.onRotateEnd += HideWaitUI;
+        MainCamera.RotateStart += ShowWaitUI;
+        MainCamera.RotateEnd += HideWaitUI;
     }
     private void OnEnable()
     {
-        MainCamera.onRotateStart += ShowWaitUI;
-        MainCamera.onRotateEnd += HideWaitUI;
+        MainCamera.RotateStart += ShowWaitUI;
+        MainCamera.RotateEnd += HideWaitUI;
     }
     private void OnDisable()
     {
-        MainCamera.onRotateStart -= ShowWaitUI;
-        MainCamera.onRotateEnd -= HideWaitUI;
+        MainCamera.RotateStart -= ShowWaitUI;
+        MainCamera.RotateEnd -= HideWaitUI;
     }
 
     private void OnDestroy()
     {
-        MainCamera.onRotateStart -= ShowWaitUI;
-        MainCamera.onRotateEnd -= HideWaitUI;
+        MainCamera.RotateStart -= ShowWaitUI;
+        MainCamera.RotateEnd -= HideWaitUI;
     }
 
     private void ShowWaitUI()

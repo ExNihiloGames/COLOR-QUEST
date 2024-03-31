@@ -185,7 +185,6 @@ public class Movement : MonoBehaviour
         while (Vector3.Distance(player.transform.position, targetDestination) > tolerance)
         {
             player.transform.position = Vector3.Lerp(player.transform.position, targetDestination, speed*Time.deltaTime);
-            Debug.Log("Trying to move player");
             yield return null;
         }
         player.transform.position = targetDestination;
