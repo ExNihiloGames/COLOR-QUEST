@@ -45,6 +45,7 @@ public class MainCamera : MonoBehaviour
     private Transform player;
     private Transform defaultFocusTarget;
     private Transform focusTarget;
+    public Transform FocusTarget { get { return focusTarget; } }
     private Vector3 offset;
     private float distance;
     private float ogOrthographicSize;
@@ -95,33 +96,7 @@ public class MainCamera : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        if (playerInputs !=null)
-        {
-            playerInputs.EagleViewCamera.Enable();
-        }
-        GameManager.onPlayerDeath += ShakeCoroutine;
-    }
-
-    private void OnDisable()
-    {
-        if (playerInputs != null)
-        {
-            playerInputs.EagleViewCamera.Enable();
-        }
-        GameManager.onPlayerDeath -= ShakeCoroutine;
-    }
-
-    private void OnDestroy()
-    {
-        EnableEagleViewActivation(false);
-        EnableEagleViewRotation(false);
-        playerInputs.EagleViewCamera.Disable();
-        GameManager.onPlayerDeath -= ShakeCoroutine;
-    }
-
-    public void EnableEagleViewActivation(bool enable)
+    private void EnableEagleViewActivation(bool enable)
     {
         if (enable)
         {
@@ -131,7 +106,7 @@ public class MainCamera : MonoBehaviour
         playerInputs.EagleViewCamera.ActivateEagleView.performed -= OnEagleView;
     }
 
-    public void EnableEagleViewRotation(bool enable)
+    private void EnableEagleViewRotation(bool enable)
     {
         if (enable)
         {
@@ -144,6 +119,15 @@ public class MainCamera : MonoBehaviour
     public void Teleport()
     {
         transform.position = player.position + offset;
+    }
+
+    public bool isObjectOnScreen(Transform target)
+    {
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
+        Bounds targetBounds = target.GetComponent<Collider>().bounds;
+        targetBounds.extents = Vector3.one * 0.5f;
+
+        return GeometryUtility.TestPlanesAABB(planes, targetBounds);
     }
 
     public void FocusOn(Transform target)
@@ -282,5 +266,31 @@ public class MainCamera : MonoBehaviour
             yield return null;
         }
         transform.position = originPos;
+    }
+
+    private void OnEnable()
+    {
+        if (playerInputs != null)
+        {
+            playerInputs.EagleViewCamera.Enable();
+        }
+        GameManager.onPlayerDeath += ShakeCoroutine;
+    }
+
+    private void OnDisable()
+    {
+        if (playerInputs != null)
+        {
+            playerInputs.EagleViewCamera.Enable();
+        }
+        GameManager.onPlayerDeath -= ShakeCoroutine;
+    }
+
+    private void OnDestroy()
+    {
+        EnableEagleViewActivation(false);
+        EnableEagleViewRotation(false);
+        playerInputs.EagleViewCamera.Disable();
+        GameManager.onPlayerDeath -= ShakeCoroutine;
     }
 }
