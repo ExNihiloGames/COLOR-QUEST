@@ -25,26 +25,41 @@ public class CameraShakeSetup
     public float shakeMagnitude = 0.5f;
 }
 
+[System.Serializable]
+public class CameraMovement
+{
+    [Range(1f, 5f)]
+    public float smoothing = 2.5f;
+    [Range(0.1f, 1f)]
+    public float posTolerance = 0.1f;
+}
+
 public class MainCamera : MonoBehaviour
 {
     public EagleViewSetup eagleViewSetup;
     public CameraShakeSetup cameraShakeSetup;
-    [Range(1f, 5f)]
-    public float smoothing = 2.5f;
+    public CameraMovement cameraMovement;
 
     private Camera cam;
     private PlayerInputs playerInputs;
     private Transform player;
+    private Transform defaultFocusTarget;
+    private Transform focusTarget;
     private Vector3 offset;
     private float distance;
     private float ogOrthographicSize;
     private float cumulativeRot;
+
+    private bool _isMoving;
+    public bool isMoving { get { return _isMoving; } }
     private bool _isEagleView;
     public bool isEagleView { get { return _isEagleView; } }
+    private bool _isCinematicMode;
+    public bool isCinematicMode { get { return _isCinematicMode; } }
 
     public static Action<bool> EagleViewStateChange;
-    public static Action onRotateStart;
-    public static Action onRotateEnd;
+    public static Action RotateStart;
+    public static Action RotateEnd;
 
     void Start()
     {
@@ -54,9 +69,10 @@ public class MainCamera : MonoBehaviour
         distance = Vector3.Distance(transform.position, player.position);
         ogOrthographicSize = cam.orthographicSize;
         offset = transform.position - player.position;
+        defaultFocusTarget = player;
+        focusTarget = player;
 
-        transform.LookAt(player.position);
-
+        transform.LookAt(player);
         playerInputs.EagleViewCamera.Enable();
         EnableEagleViewActivation(true);
         EnableEagleViewRotation(false);
@@ -66,8 +82,16 @@ public class MainCamera : MonoBehaviour
     {        
         if (!_isEagleView)
         {
-            Vector3 targetCamPos = player.position + offset;
-            transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
+            Vector3 targetCamPos = focusTarget.position + offset;
+            transform.position = Vector3.Lerp(transform.position, targetCamPos, cameraMovement.smoothing * Time.deltaTime);
+            if (Vector3.Distance(transform.position, targetCamPos) <= cameraMovement.posTolerance)
+            {
+                EnableEagleViewActivation(true);
+            }
+            else
+            {
+                EnableEagleViewActivation(false);
+            }
         }
     }
 
@@ -122,6 +146,18 @@ public class MainCamera : MonoBehaviour
         transform.position = player.position + offset;
     }
 
+    public void FocusOn(Transform target)
+    {
+        focusTarget = target;
+        EnableEagleViewActivation(false);
+    }
+
+    public void FocusOff()
+    {
+        focusTarget = defaultFocusTarget;
+        EnableEagleViewActivation(true);
+    }
+
     private void OnEagleView(InputAction.CallbackContext context)
     {
         if (!_isEagleView)
@@ -165,7 +201,7 @@ public class MainCamera : MonoBehaviour
         EnableEagleViewRotation(false);
 
         float rot = 0f;
-        onRotateStart?.Invoke(); // Event for Tuto
+        RotateStart?.Invoke(); // Event for Tuto
         while (rot < eagleViewSetup.stepRot)
         {
             transform.RotateAround(player.position, Vector3.up, direction * eagleViewSetup.rotationSpeed * Time.deltaTime);
@@ -174,7 +210,7 @@ public class MainCamera : MonoBehaviour
             yield return null;
         }
         cumulativeRot += rot * direction;
-        onRotateEnd?.Invoke(); // Event for Tuto
+        RotateEnd?.Invoke(); // Event for Tuto
 
         EnableEagleViewActivation(true);
         EnableEagleViewRotation(true);
@@ -189,7 +225,7 @@ public class MainCamera : MonoBehaviour
         float rot = 0f;
         float moduloCumulativeRot = cumulativeRot % 360;
 
-        onRotateStart?.Invoke(); // Tuto
+        RotateStart?.Invoke(); // Tuto
         // Determines the direction in which to rotate the camera, don't ask too much questions nor touch anything really
         if (moduloCumulativeRot >= 0f && moduloCumulativeRot <= 180f || moduloCumulativeRot >= -360 && moduloCumulativeRot <= -180)
         {
@@ -219,7 +255,7 @@ public class MainCamera : MonoBehaviour
             yield return null;
         }
         cam.orthographicSize = ogOrthographicSize;
-        onRotateEnd?.Invoke(); // Tuto
+        RotateEnd?.Invoke(); // Tuto
         _isEagleView = false;
         EagleViewStateChange?.Invoke(_isEagleView);
 
