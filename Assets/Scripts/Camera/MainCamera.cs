@@ -59,6 +59,7 @@ public class MainCamera : MonoBehaviour
     public bool isCinematicMode { get { return _isCinematicMode; } }
 
     public static Action<bool> EagleViewStateChange;
+    public static Action<bool> FocusModeStateChange;
     public static Action RotateStart;
     public static Action RotateEnd;
 
@@ -134,12 +135,14 @@ public class MainCamera : MonoBehaviour
     {
         focusTarget = target;
         EnableEagleViewActivation(false);
+        FocusModeStateChange?.Invoke(true);
     }
 
     public void FocusOff()
     {
         focusTarget = defaultFocusTarget;
         EnableEagleViewActivation(true);
+        FocusModeStateChange?.Invoke(false);
     }
 
     private void OnEagleView(InputAction.CallbackContext context)
