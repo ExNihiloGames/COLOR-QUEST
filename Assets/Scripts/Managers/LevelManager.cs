@@ -7,11 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     private static LevelManager _instance;
     public static LevelManager Instance { get { return _instance; } }
-    //private GameManager gameManager;
-    //private SoundManager soundManager;
-    private MainCamera mainCamera;
     private PlayerInputs playerInputs;
-    //private Movement playerMovement;
     private int totalCollectables;
     private int currentCollectablesCount;
     private float nextLevelTransitionDuration = 3;
@@ -35,24 +31,33 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.onPause += OnGamePaused;
+        MainCamera.EagleViewStateChange += OnEagleViewStateChange;
         ColorCollectable.onColorCollected += OnColorPicked;
-        GameManager.onPause += DisablePlayerInputs;
     }
 
     private void OnDisable()
     {
+        GameManager.onPause -= OnGamePaused;
+        MainCamera.EagleViewStateChange -= OnEagleViewStateChange;
         ColorCollectable.onColorCollected -= OnColorPicked;
-        GameManager.onPause -= DisablePlayerInputs;
     }
 
-    // Start is called before the first frame update
+    private void OnDestroy()
+    {        
+        GameManager.onPause -= OnGamePaused;
+        MainCamera.EagleViewStateChange -= OnEagleViewStateChange;
+        ColorCollectable.onColorCollected -= OnColorPicked;
+        playerInputs.PlayerActions.Reset.performed -= LM_ResetLevel;
+        playerInputs.PlayerActions.Disable();
+    }
+
     void Start()
     {
-        mainCamera = FindObjectOfType<MainCamera>();
+        MainCamera.EagleViewStateChange += OnEagleViewStateChange;
         playerInputs = new PlayerInputs();
         playerInputs.PlayerActions.Enable();
         playerInputs.PlayerActions.Reset.performed += LM_ResetLevel;
-        playerInputs.PlayerActions.EagleViewCam.performed += ActivateEagleView;
 
         foreach(ColorCollectable collectable in FindObjectsOfType<ColorCollectable>())
         {
@@ -71,20 +76,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void ActivateEagleView(InputAction.CallbackContext context)
+    private void OnEagleViewStateChange(bool state)
     {
-        if (mainCamera.isEagleView)
-        {
-            mainCamera.SetEagleView(false);
-            onEagleView.Invoke(false);
-            //playerMovement.EnablePlayerInputs(true);
-        }
-        else
-        {
-            mainCamera.SetEagleView(true);
-            onEagleView.Invoke(true);
-            //playerMovement.EnablePlayerInputs(false);
-        }
+        onEagleView?.Invoke(state);
     }
 
     private void LM_ResetLevel(InputAction.CallbackContext context)
@@ -92,25 +86,28 @@ public class LevelManager : MonoBehaviour
         onLevelReset?.Invoke();
     }
 
-    public void DisablePlayerInputs(bool disable)
+    private void OnGamePaused(bool pauseState)
     {
-        if (disable)
-        {
-            playerInputs.PlayerActions.Reset.performed -= LM_ResetLevel;
-            playerInputs.PlayerActions.EagleViewCam.performed -= ActivateEagleView;
-            playerInputs.PlayerActions.Disable();            
-        }
-        else
+        EnablePlayerInputs(!pauseState);
+    }
+
+    private void EnablePlayerInputs(bool enable)
+    {
+        if (enable)
         {
             playerInputs.PlayerActions.Enable();
             playerInputs.PlayerActions.Reset.performed += LM_ResetLevel;
-            playerInputs.PlayerActions.EagleViewCam.performed += ActivateEagleView;
+        }
+        else
+        {
+            playerInputs.PlayerActions.Reset.performed -= LM_ResetLevel;
+            playerInputs.PlayerActions.Disable();
         }
     }
 
     IEnumerator GoNextLevel()
     {
-        DisablePlayerInputs(false);
+        EnablePlayerInputs(true);
         yield return new WaitForSeconds(nextLevelTransitionDuration);
         onRequestNextLevel?.Invoke();
     }

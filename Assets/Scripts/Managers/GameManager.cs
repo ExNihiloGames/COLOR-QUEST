@@ -80,6 +80,25 @@ public class GameManager : MonoBehaviour
         LevelManager.onLevelReset -= ResetLevel;
     }
 
+    private void OnDestroy()
+    {
+        PauseMenu.onPauseInput -= OnPauseInput;
+        MenuBase.onLaunchTutorial -= LoadTutorial;
+        MenuBase.onMainMenu -= LoadTitleScreen;
+        MenuBase.onExitGame -= ExitGame;
+        MenuBase.onCredits -= LoadCreditScene;
+
+        ResetFallingPlayer.onPlayerFall -= OnPlayerDeath;
+        CannonBall.onPlayerCollision -= OnPlayerDeath;
+        Laser.onLaserHitPlayer -= OnPlayerDeath;
+        Traps.onPlayerHitTrap -= OnPlayerDeath;
+
+        Movement.onPlayerReturnToCheckpoint -= OnPlayerRespawn;
+
+        LevelManager.onRequestNextLevel -= LoadNextLevel;
+        LevelManager.onLevelReset -= ResetLevel;
+    }
+
     public enum Scene
     {
         Manager = 0,
@@ -110,19 +129,16 @@ public class GameManager : MonoBehaviour
     {
         if (isPaused)
         {
-            Debug.Log("Resume game");
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
-            onPause?.Invoke(false);
         }
         else
         {
-            Debug.Log("Pause game");
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
-            onPause?.Invoke(true);
         }
         isPaused = !isPaused;
+        onPause?.Invoke(isPaused);
     }
 
 
@@ -170,7 +186,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         currentScene = (Scene)SceneManager.GetActiveScene().buildIndex;
-        //StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void LoadNextLevel()

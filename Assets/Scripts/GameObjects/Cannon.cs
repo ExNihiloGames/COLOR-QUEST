@@ -20,14 +20,12 @@ public class Cannon : MonoBehaviour
     private Animator animator;
     private float nextFire;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = parentCannon.GetComponent<Animator>();
         nextFire = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (nextFire <= 0f)

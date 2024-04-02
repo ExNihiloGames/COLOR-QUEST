@@ -11,7 +11,6 @@ public class Movement : MonoBehaviour
     private Vector2 moveInput;
     private Grid grid;
     private GameObject player;
-    //private Player playerScript;
     private PlayerInputs playerInputs;
     private Node playerNode;
     private Animator animator;
@@ -34,8 +33,8 @@ public class Movement : MonoBehaviour
     {
         EnablePlayerInputs(true);
         GameManager.onPlayerDeath += ResetOnDeath;
-        GameManager.onPause += DisablePlayerInputs;
-        LevelManager.onEagleView += DisablePlayerInputs;
+        GameManager.onPause += LockPlayer;
+        LevelManager.onEagleView += LockPlayer;
         ColorCollectable.onColorCollected += OnColorCollected;
     }
 
@@ -43,33 +42,18 @@ public class Movement : MonoBehaviour
     {
         EnablePlayerInputs(false);
         GameManager.onPlayerDeath -= ResetOnDeath;
-        GameManager.onPause -= DisablePlayerInputs;
-        LevelManager.onEagleView -= DisablePlayerInputs;
+        GameManager.onPause -= LockPlayer;
+        LevelManager.onEagleView -= LockPlayer;
         ColorCollectable.onColorCollected -= OnColorCollected;
     }
 
-    public void EnablePlayerInputs(bool enable)
+    private void OnDestroy()
     {
-        if (enable)
-        {
-            playerInputs.PlayerMovement.Enable();
-        }
-        else
-        {
-            playerInputs.PlayerMovement.Disable();
-        }
-    }
-
-    public void DisablePlayerInputs(bool disabled)
-    {
-        if (disabled)
-        {
-            playerInputs.PlayerMovement.Disable();
-        }
-        else
-        {
-            playerInputs.PlayerMovement.Enable();
-        }
+        EnablePlayerInputs(false);
+        GameManager.onPlayerDeath -= ResetOnDeath;
+        GameManager.onPause -= LockPlayer;
+        LevelManager.onEagleView -= LockPlayer;
+        ColorCollectable.onColorCollected -= OnColorCollected;
     }
 
     void Start()
@@ -136,20 +120,7 @@ public class Movement : MonoBehaviour
                 {
                     StartCoroutine(MovePlayer(newNode));
                 }
-                else
-                {
-                    Debug.Log("Can't move: Obstacle in the way");
-                    Debug.Log("Is there ground ? " + Physics.CheckSphere(tmp, 0.25f, walkableMask) + "Is there Obstacle? " + Physics.CheckSphere(new Vector3(tmp.x, tmp.y + 0.5f, tmp.z), 0.25f, walkableMask));
-                }
             }
-            else
-            {
-                Debug.Log("Can't move: Node is not walkable or player node is not walkable");
-            }
-        }
-        else
-        {
-            Debug.Log("Can't move: Node is Null or player is LOCKED");
         }
     }
 
@@ -161,6 +132,35 @@ public class Movement : MonoBehaviour
     void ResetOnDeath()
     {
         StartCoroutine(ResetToLastCheckpoint(1));
+    }
+
+    private void LockPlayer(bool pauseState)
+    {
+        EnablePlayerInputs(!pauseState);
+    }
+
+    public void EnablePlayerInputs(bool enable)
+    {
+        if (enable)
+        {
+            playerInputs.PlayerMovement.Enable();
+        }
+        else
+        {
+            playerInputs.PlayerMovement.Disable();
+        }
+    }
+
+    public void DisablePlayerInputs(bool disabled)
+    {
+        if (disabled)
+        {
+            playerInputs.PlayerMovement.Disable();
+        }
+        else
+        {
+            playerInputs.PlayerMovement.Enable();
+        }
     }
 
     public IEnumerator ResetToLastCheckpoint(float seconds)
