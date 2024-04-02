@@ -36,7 +36,7 @@ public class PlatformTrigger : MonoBehaviour
                     playerInstance.SetActive(true);
                 }
             }
-            catch (NullReferenceException notAPlatform){}
+            catch (NullReferenceException){}
         }
     }
 

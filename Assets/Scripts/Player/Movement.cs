@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour
     private PlayerInputs playerInputs;
     private Node playerNode;
     private Animator animator;
+    private Coroutine currentMovementCoroutine;
     private bool isMoving;
 
     public Vector3 LastCheckpoint => lastCheckpoint;
@@ -34,7 +35,9 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(true);
         GameManager.onPlayerDeath += ResetOnDeath;
         GameManager.onPause += LockPlayer;
-        LevelManager.onEagleView += LockPlayer;
+        //LevelManager.onEagleView += LockPlayer;
+        MainCamera.FocusModeStateChange += LockPlayer;
+        MainCamera.EagleViewStateChange += LockPlayer;
         ColorCollectable.onColorCollected += OnColorCollected;
     }
 
@@ -43,7 +46,9 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(false);
         GameManager.onPlayerDeath -= ResetOnDeath;
         GameManager.onPause -= LockPlayer;
-        LevelManager.onEagleView -= LockPlayer;
+        //LevelManager.onEagleView -= LockPlayer;
+        MainCamera.FocusModeStateChange -= LockPlayer;
+        MainCamera.EagleViewStateChange -= LockPlayer;
         ColorCollectable.onColorCollected -= OnColorCollected;
     }
 
@@ -52,7 +57,10 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(false);
         GameManager.onPlayerDeath -= ResetOnDeath;
         GameManager.onPause -= LockPlayer;
-        LevelManager.onEagleView -= LockPlayer;
+        //LevelManager.onEagleView -= LockPlayer;
+        MainCamera.FocusModeStateChange -= LockPlayer;
+        MainCamera.EagleViewStateChange -= LockPlayer;
+        Player.PlayerFalls -= InterruptCurrentMovement;
         ColorCollectable.onColorCollected -= OnColorCollected;
     }
 
@@ -60,6 +68,7 @@ public class Movement : MonoBehaviour
     {
         lastCheckpoint = player.transform.position;
         playerNode = grid.NodeFromWorldPoint(player.transform.position);
+        Player.PlayerFalls += InterruptCurrentMovement;
     }
 
     private void Update()
@@ -118,7 +127,7 @@ public class Movement : MonoBehaviour
                 tmp = new Vector3(tmp.x, player.transform.position.y, tmp.z);
                 if (Physics.CheckSphere(tmp, 0.25f, walkableMask) && !Physics.CheckSphere(new Vector3(tmp.x, tmp.y + 0.5f, tmp.z), 0.25f, walkableMask))
                 {
-                    StartCoroutine(MovePlayer(newNode));
+                    currentMovementCoroutine = StartCoroutine(MovePlayer(newNode));
                 }
             }
         }
@@ -129,7 +138,7 @@ public class Movement : MonoBehaviour
         playerNode = grid.NodeFromWorldPoint(player.transform.position);
     }
 
-    void ResetOnDeath()
+    private void ResetOnDeath()
     {
         StartCoroutine(ResetToLastCheckpoint(1));
     }
@@ -139,7 +148,16 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(!pauseState);
     }
 
-    public void EnablePlayerInputs(bool enable)
+    private void InterruptCurrentMovement()
+    {
+        if (isMoving)
+        {
+            StopCoroutine(currentMovementCoroutine);
+            isMoving = false;
+        }
+    }
+
+    private void EnablePlayerInputs(bool enable)
     {
         if (enable)
         {
@@ -151,19 +169,12 @@ public class Movement : MonoBehaviour
         }
     }
 
-    public void DisablePlayerInputs(bool disabled)
+    private void OnColorCollected(Filter filter, Vector3 position)
     {
-        if (disabled)
-        {
-            playerInputs.PlayerMovement.Disable();
-        }
-        else
-        {
-            playerInputs.PlayerMovement.Enable();
-        }
+        lastCheckpoint = position;
     }
 
-    public IEnumerator ResetToLastCheckpoint(float seconds)
+    private IEnumerator ResetToLastCheckpoint(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         player.transform.position = lastCheckpoint;
@@ -185,10 +196,5 @@ public class Movement : MonoBehaviour
         player.transform.position = targetDestination;
         UpdatePlayerNode();
         isMoving = false;
-    }
-
-    private void OnColorCollected(Filter filter, Vector3 position)
-    {
-        lastCheckpoint = position;
     }
 }

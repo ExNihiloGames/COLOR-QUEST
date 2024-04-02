@@ -159,7 +159,9 @@ MonoBehaviour:
   cameraShakeSetup:
     shakeDuration: 0.2
     shakeMagnitude: 0.5
-  smoothing: 2.5
+  cameraMovement:
+    smoothing: 2.5
+    posTolerance: 0.119
 --- !u!82 &-5335511225666806589
 AudioSource:
   m_ObjectHideFlags: 0
