@@ -35,7 +35,9 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(true);
         GameManager.onPlayerDeath += ResetOnDeath;
         GameManager.onPause += LockPlayer;
-        LevelManager.onEagleView += LockPlayer;
+        //LevelManager.onEagleView += LockPlayer;
+        MainCamera.FocusModeStateChange += LockPlayer;
+        MainCamera.EagleViewStateChange += LockPlayer;
         ColorCollectable.onColorCollected += OnColorCollected;
     }
 
@@ -44,7 +46,9 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(false);
         GameManager.onPlayerDeath -= ResetOnDeath;
         GameManager.onPause -= LockPlayer;
-        LevelManager.onEagleView -= LockPlayer;
+        //LevelManager.onEagleView -= LockPlayer;
+        MainCamera.FocusModeStateChange -= LockPlayer;
+        MainCamera.EagleViewStateChange -= LockPlayer;
         ColorCollectable.onColorCollected -= OnColorCollected;
     }
 
@@ -53,7 +57,9 @@ public class Movement : MonoBehaviour
         EnablePlayerInputs(false);
         GameManager.onPlayerDeath -= ResetOnDeath;
         GameManager.onPause -= LockPlayer;
-        LevelManager.onEagleView -= LockPlayer;
+        //LevelManager.onEagleView -= LockPlayer;
+        MainCamera.FocusModeStateChange -= LockPlayer;
+        MainCamera.EagleViewStateChange -= LockPlayer;
         Player.PlayerFalls -= InterruptCurrentMovement;
         ColorCollectable.onColorCollected -= OnColorCollected;
     }
